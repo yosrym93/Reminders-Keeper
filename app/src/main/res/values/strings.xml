@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Reminders Keeper</string>
+    <string name="new_reminder">New Reminder</string>
+    <string name="edit_reminder">Edit Reminder</string>
+    <string name="delete_reminder">Delete Reminder</string>
+    <string name="exit">Exit</string>
+</resources>
