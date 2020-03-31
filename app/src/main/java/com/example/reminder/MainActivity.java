@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import  com.example.reminder.RemindersDbAdapter;
+
 import java.util.ArrayList;
 
 
@@ -22,7 +24,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //
+        RemindersDbAdapter rDb = new RemindersDbAdapter(this);
+        rDb.open();
+        rDb.createReminder("lolll",true);
+        rDb.fetchReminderById(1);
 
+
+
+        //
         // Test adapter, TODO: replace with cursor adapter
         CustomArrayAdapter adapter = new CustomArrayAdapter(this, getTestReminders());
 
