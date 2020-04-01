@@ -25,10 +25,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //
-        RemindersDbAdapter rDb = new RemindersDbAdapter(this);
-        rDb.open();
-        rDb.createReminder("lolll",true);
-        rDb.fetchReminderById(1);
+        //RemindersDbAdapter rDb = new RemindersDbAdapter(this);
+        //rDb.open();
+        //rDb.createReminder("lolll",true);
+        //rDb.fetchReminderById(1);
 
 
 
