@@ -6,18 +6,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
 
 public class ReminderDialog extends Dialog implements android.view.View.OnClickListener {
-    private int reminderID;
+    private Reminder activeReminder;
     private boolean isEdit;
 
-    public ReminderDialog(Activity a, boolean isEdit, int reminderID) {
+     ReminderDialog(Activity a, boolean isEdit, Reminder activeReminder) {
         super(a);
         this.isEdit = isEdit;
-        this.reminderID = reminderID;
+        this.activeReminder = activeReminder;
     }
 
     @Override
@@ -41,23 +42,41 @@ public class ReminderDialog extends Dialog implements android.view.View.OnClickL
 
         titleText += " Reminder!";
         dialog_title.setText(titleText);
+
+        //In edit mode, fill the input text editor and check box with current reminder data
+        if(isEdit) {
+            TextInputLayout reminderTextInput = findViewById(R.id.dialog_reminder_text);
+            EditText textEditor = reminderTextInput.getEditText();
+            if(textEditor != null)
+                textEditor.setText(activeReminder.getContent());
+
+            CheckBox isImportantCheckbox = findViewById(R.id.dialog_important_checkbox);
+            isImportantCheckbox.setChecked(activeReminder.getImportant());
+        }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.dialog_save_button:
-                TextInputLayout reminder_text_input = findViewById(R.id.dialog_reminder_text);
-                String reminderText = reminder_text_input.getEditText().getText().toString();
-                boolean isImportant = ((CheckBox)findViewById(R.id.dialog_important_checkbox)).isChecked();
+                // Get input reminder text
+                TextInputLayout reminderTextInput = findViewById(R.id.dialog_reminder_text);
+                EditText textEditor = reminderTextInput.getEditText();
+                String inputReminderText = "";
+
+                if(textEditor != null)
+                    inputReminderText = reminderTextInput.getEditText().getText().toString();
+
+                // Get importance status
+                CheckBox isImportantCheckbox = findViewById(R.id.dialog_important_checkbox);
+                boolean isImportant = isImportantCheckbox.isChecked();
+
                 if(isEdit)
-                    // TODO: Handle reminder edit here, use reminderID, isImportant and reminderText
-                    System.out.println("Editing reminder " + reminderID);
+                    // TODO: Handle reminder edit here, use activeReminder, isImportant and inputReminderText
+                    System.out.println("Editing reminder " + activeReminder.getId());
                 else
-                    // TODO: Handle new reminder here, use reminderText and isImportant
+                    // TODO: Handle new reminder here, use inputReminderText and isImportant
                     System.out.println("New reminder");
-                System.out.println(reminderText);
-                System.out.println(isImportant);
                 break;
             case R.id.dialog_cancel_button:
                 break;

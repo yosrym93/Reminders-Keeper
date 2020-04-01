@@ -18,8 +18,6 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
-    private int activeReminderID;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,9 +42,8 @@ public class MainActivity extends AppCompatActivity {
         remindersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Get the clicked reminder id
-                Reminder reminder = (Reminder) parent.getItemAtPosition(position);
-                activeReminderID = reminder.getId();
+                // Get the clicked reminder
+                final Reminder activeReminder = (Reminder) parent.getItemAtPosition(position);
 
                 // Create a pop up to edit/delete the reminder
                 PopupMenu popup = new PopupMenu(MainActivity.this, view);
@@ -58,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.edit_reminder:
                                 System.out.println("Edit Reminder!");
                                 ReminderDialog dialog = new ReminderDialog(
-                                        MainActivity.this, true, activeReminderID);
+                                        MainActivity.this, true, activeReminder);
                                 dialog.show();
                                 break;
                             case R.id.delete_reminder:
@@ -91,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.new_reminder:
-                ReminderDialog dialog = new ReminderDialog(this, false, -1);
+                ReminderDialog dialog = new ReminderDialog(this, false, null);
                 dialog.show();
                 break;
         }
