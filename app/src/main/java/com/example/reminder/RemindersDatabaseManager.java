@@ -1,6 +1,5 @@
 package com.example.reminder;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -8,19 +7,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.reminder.Reminder;
 
-
-public class RemindersDbAdapter {
+public class RemindersDatabaseManager {
 
     //these are the column names
-    public static final String COL_ID = "_id";
-    public static final String COL_CONTENT = "content";
-    public static final String COL_IMPORTANT = "important";
+    private static final String COL_ID = "_id";
+    static final String COL_CONTENT = "content";
+    static final String COL_IMPORTANT = "important";
     //these are the corresponding indices
-    public static final int INDEX_ID = 0;
-    public static final int INDEX_CONTENT = INDEX_ID + 1;
-    public static final int INDEX_IMPORTANT = INDEX_ID + 2;
+    static final int INDEX_ID = 0;
+    static final int INDEX_CONTENT = INDEX_ID + 1;
+    static final int INDEX_IMPORTANT = INDEX_ID + 2;
     //used for logging
     private static final String TAG = "RemindersDbAdapter";
     private DatabaseHelper mDbHelper;
@@ -37,51 +34,47 @@ public class RemindersDbAdapter {
                     COL_IMPORTANT + " INTEGER );";
 
 
-    public RemindersDbAdapter(Context ctx) {
+    RemindersDatabaseManager(Context ctx) {
         this.mCtx = ctx;
     }
-    //open
-    public void open() throws SQLException {
+
+    void open() throws SQLException {
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getWritableDatabase();
     }
-    //close
-    public void close() {
+
+    void close() {
         if (mDbHelper != null) {
             mDbHelper.close();
         }
     }
 
 
-    //TODO implement the function createReminder() which take the name as the content of the reminder and boolean important...note that the id will be created for you automatically
     public void createReminder(String name, boolean important) {
         String imp;
-        if (important == true){
+        if (important){
             imp = "1";
         }
         else
             imp = "0";
         String Query = "INSERT INTO "+TABLE_NAME+"("+COL_CONTENT+","+COL_IMPORTANT+") VALUES('"+name+"',"+imp+");";
-        System.out.println(Query);
         mDb.execSQL(Query);
       
     }
-    //TODO overloaded to take a reminder
-    public long createReminder(Reminder reminder) {
+
+    void createReminder(Reminder reminder) {
         String imp;
-        if (reminder.getImportant() == true){
+        if (reminder.getImportant()){
             imp = "1";
         }
         else
             imp = "0";
         String Query = "INSERT INTO "+TABLE_NAME+"("+COL_CONTENT+","+COL_IMPORTANT+") VALUES('"+reminder.getContent()+"',"+imp+");";
         mDb.execSQL(Query);
-        return 1;
     }
 
-    //TODO implement the function fetchReminderById() to get a certain reminder given its id
-    public Reminder fetchReminderById(int id) {
-       String Query = "Select * from "+TABLE_NAME+" where "+COL_ID+" = "+String.valueOf(id);
+    Reminder fetchReminderById(int id) {
+       String Query = "Select * from "+TABLE_NAME+" where "+COL_ID+" = "+ id;
        Cursor result = mDb.rawQuery(Query,null);
        result.moveToFirst();
        boolean  imp = false;
@@ -89,35 +82,30 @@ public class RemindersDbAdapter {
            imp = true;
        }
        Reminder r = new Reminder(id,result.getString(INDEX_CONTENT),imp);
-       System.out.println(r.getContent());
+       result.close();
        return r;
     }
 
 
-    //TODO implement the function fetchAllReminders() which get all reminders
-    public Cursor fetchAllReminders() {
+    Cursor fetchAllReminders() {
         String Query = "Select * from "+TABLE_NAME+";";
-        Cursor result = mDb.rawQuery(Query,null);
-        return result;
+         return mDb.rawQuery(Query,null);
     }
 
-    //TODO implement the function updateReminder() to update a certain reminder
-    public void updateReminder(Reminder reminder) {
+    void updateReminder(Reminder reminder) {
         int imp = 0;
-        if(reminder.getImportant() == true)
+        if(reminder.getImportant())
             imp = 1;
-       String Query ="UPDATE "+TABLE_NAME+" SET "+COL_CONTENT +" = '"+reminder.getContent() +"', "+COL_IMPORTANT+" = "+String.valueOf(imp);
-       Query = Query + " WHERE "+COL_ID+" = "+String.valueOf(reminder.getId());
+       String Query ="UPDATE "+TABLE_NAME+" SET "+COL_CONTENT +" = '"+reminder.getContent() +"', "+COL_IMPORTANT+" = "+imp;
+       Query = Query + " WHERE "+COL_ID+" = "+ reminder.getId();
        mDb.execSQL(Query);
     }
-    //TODO implement the function deleteReminderById() to delete a certain reminder given its id
-    public void deleteReminderById(int nId) {
+    void deleteReminderById(int nId) {
 
-        String Query ="DELETE FROM "+TABLE_NAME+" WHERE "+COL_ID+" = "+String.valueOf(nId);
+        String Query ="DELETE FROM "+TABLE_NAME+" WHERE "+COL_ID+" = "+ nId;
         mDb.execSQL(Query);
     }
 
-    //TODO implement the function deleteAllReminders() to delete all reminders
     public void deleteAllReminders() {
 
         String Query ="DELETE FROM "+TABLE_NAME;

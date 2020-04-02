@@ -2,8 +2,6 @@ package com.example.reminder;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import android.widget.Adapter;
-import android.widget.CursorAdapter;
 import android.content.Context;
 import android.database.Cursor;
 //import android.support.v4.content.ContextCompat;
@@ -21,7 +19,7 @@ import androidx.annotation.RequiresApi;
 
 public class RemindersSimpleCursorAdapter extends SimpleCursorAdapter {
 
-    public RemindersSimpleCursorAdapter(Context context, int layout, Cursor c, String[]
+    RemindersSimpleCursorAdapter(Context context, int layout, Cursor c, String[]
             from, int[] to, int flags) {
         super(context, layout, c, from, to, flags);
     }
@@ -37,14 +35,14 @@ public class RemindersSimpleCursorAdapter extends SimpleCursorAdapter {
         ViewHolder holder = (ViewHolder) view.getTag();
         if (holder == null) {
             holder = new ViewHolder();
-            holder.colImp = cursor.getColumnIndexOrThrow(RemindersDbAdapter.COL_IMPORTANT);
+            holder.colImp = cursor.getColumnIndexOrThrow(RemindersDatabaseManager.COL_IMPORTANT);
             holder.listTab = view.findViewById(R.id.reminder_importance_marker);
             view.setTag(holder);
         }
 
 
         if (cursor.getInt(holder.colImp) == 0) {
-            holder.listTab.setForeground(new ColorDrawable(Color.RED));
+            holder.listTab.setForeground(new ColorDrawable(Color.LTGRAY));
         } else {
             holder.listTab.setForeground(new ColorDrawable(Color.GREEN));
         }

@@ -17,8 +17,8 @@ import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 
-public class CustomArrayAdapter extends ArrayAdapter<Reminder> {
-    public CustomArrayAdapter(Context context, ArrayList<Reminder> reminders) {
+public class TestArrayAdapter extends ArrayAdapter<Reminder> {
+    public TestArrayAdapter(Context context, ArrayList<Reminder> reminders) {
         super(context, 0, reminders);
     }
 

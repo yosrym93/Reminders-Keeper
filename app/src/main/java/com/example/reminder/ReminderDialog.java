@@ -1,6 +1,5 @@
 package com.example.reminder;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
@@ -16,11 +15,11 @@ public class ReminderDialog extends Dialog implements android.view.View.OnClickL
     private boolean isEdit;
 
     private MainActivity mainActivity;
-     ReminderDialog(Activity a, boolean isEdit, Reminder activeReminder, MainActivity b) {
-        super(a);
+     ReminderDialog(boolean isEdit, Reminder activeReminder, MainActivity mainActivity) {
+        super(mainActivity);
         this.isEdit = isEdit;
         this.activeReminder = activeReminder;
-        this.mainActivity = b;
+        this.mainActivity = mainActivity;
 
     }
 
@@ -75,18 +74,14 @@ public class ReminderDialog extends Dialog implements android.view.View.OnClickL
                 boolean isImportant = isImportantCheckbox.isChecked();
 
                 if(isEdit) {
-                    // TODO: Handle reminder edit here, use activeReminder, isImportant and inputReminderText
                     Reminder editedReminder = new Reminder(activeReminder.getId(),
                             inputReminderText, isImportant);
                     mainActivity.editReminder(editedReminder);
-                    System.out.println("Editing reminder " + activeReminder.getId());
                 }
                 else {
-                    // TODO: Handle new reminder here, use inputReminderText and isImportant
                     Reminder newReminder = new Reminder(0,
                             inputReminderText, isImportant);
                     mainActivity.addNewReminder(newReminder);
-                    System.out.println("New reminder");
                 }
                 break;
             case R.id.dialog_cancel_button:

@@ -5,12 +5,10 @@ package com.example.reminder;
  */
 
 public class Reminder {
-
-
     private int mId;
     private String mContent;
     private boolean mImportant;
-    public Reminder(int id, String content, boolean important) {
+    Reminder(int id, String content, boolean important) {
         mId = id;
         mImportant = important;
         mContent = content;
@@ -21,17 +19,10 @@ public class Reminder {
     public void setId(int id) {
         mId = id;
     }
-    public boolean getImportant() {
+    boolean getImportant() {
         return mImportant;
     }
-    public void setImportant(boolean important) {
-        mImportant = important;
-    }
-    public String getContent() {
+    String getContent() {
         return mContent;
     }
-    public void setContent(String content) {
-        mContent = content;
-    }
-
 }
