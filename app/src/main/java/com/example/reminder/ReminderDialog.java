@@ -15,10 +15,13 @@ public class ReminderDialog extends Dialog implements android.view.View.OnClickL
     private Reminder activeReminder;
     private boolean isEdit;
 
-     ReminderDialog(Activity a, boolean isEdit, Reminder activeReminder) {
+    private MainActivity mainActivity;
+     ReminderDialog(Activity a, boolean isEdit, Reminder activeReminder, MainActivity b) {
         super(a);
         this.isEdit = isEdit;
         this.activeReminder = activeReminder;
+        this.mainActivity = b;
+
     }
 
     @Override
@@ -71,12 +74,20 @@ public class ReminderDialog extends Dialog implements android.view.View.OnClickL
                 CheckBox isImportantCheckbox = findViewById(R.id.dialog_important_checkbox);
                 boolean isImportant = isImportantCheckbox.isChecked();
 
-                if(isEdit)
+                if(isEdit) {
                     // TODO: Handle reminder edit here, use activeReminder, isImportant and inputReminderText
+                    Reminder editedReminder = new Reminder(activeReminder.getId(),
+                            inputReminderText, isImportant);
+                    mainActivity.editReminder(editedReminder);
                     System.out.println("Editing reminder " + activeReminder.getId());
-                else
+                }
+                else {
                     // TODO: Handle new reminder here, use inputReminderText and isImportant
+                    Reminder newReminder = new Reminder(0,
+                            inputReminderText, isImportant);
+                    mainActivity.addNewReminder(newReminder);
                     System.out.println("New reminder");
+                }
                 break;
             case R.id.dialog_cancel_button:
                 break;

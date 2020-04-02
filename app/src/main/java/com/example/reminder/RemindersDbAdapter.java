@@ -74,7 +74,7 @@ public class RemindersDbAdapter {
         }
         else
             imp = "0";
-        String Query = "INSERT INTO "+TABLE_NAME+"("+COL_CONTENT+","+COL_IMPORTANT+") VALUES("+reminder.getContent()+","+imp+");";
+        String Query = "INSERT INTO "+TABLE_NAME+"("+COL_CONTENT+","+COL_IMPORTANT+") VALUES('"+reminder.getContent()+"',"+imp+");";
         mDb.execSQL(Query);
         return 1;
     }
@@ -103,7 +103,10 @@ public class RemindersDbAdapter {
 
     //TODO implement the function updateReminder() to update a certain reminder
     public void updateReminder(Reminder reminder) {
-       String Query ="UPDATE "+TABLE_NAME+" SET "+COL_CONTENT +" = "+reminder.getContent() +", "+COL_IMPORTANT+" = "+String.valueOf(reminder.getImportant());
+        int imp = 0;
+        if(reminder.getImportant() == true)
+            imp = 1;
+       String Query ="UPDATE "+TABLE_NAME+" SET "+COL_CONTENT +" = '"+reminder.getContent() +"', "+COL_IMPORTANT+" = "+String.valueOf(imp);
        Query = Query + " WHERE "+COL_ID+" = "+String.valueOf(reminder.getId());
        mDb.execSQL(Query);
     }
